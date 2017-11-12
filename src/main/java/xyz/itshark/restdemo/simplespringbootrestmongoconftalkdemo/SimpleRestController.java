@@ -11,47 +11,40 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.itshark.restdemo.simplespringbootrestmongoconftalkdemo.pojo.Author;
 import xyz.itshark.restdemo.simplespringbootrestmongoconftalkdemo.pojo.Comment;
 import xyz.itshark.restdemo.simplespringbootrestmongoconftalkdemo.pojo.Post;
-import xyz.itshark.restdemo.simplespringbootrestmongoconftalkdemo.repository.AuthorRepository;
-import xyz.itshark.restdemo.simplespringbootrestmongoconftalkdemo.repository.CommentRepository;
-import xyz.itshark.restdemo.simplespringbootrestmongoconftalkdemo.repository.PostRepository;
+import xyz.itshark.restdemo.simplespringbootrestmongoconftalkdemo.service.Service;
 
 @RestController
 public class SimpleRestController {
 
-	@Autowired
-	AuthorRepository authRepo;
 	
 	@Autowired
-	PostRepository postRepo;
-	
-	@Autowired
-	CommentRepository commentRepo;
+	Service service;
 	
 	@RequestMapping(path="/authors")
 	public List<Author> getAllAuthors() {
-		return authRepo.findAll();
+		return service.getAllAuthors();
 	}
 
 	@RequestMapping(path="/authors/{id}")
 	public Author getAuthorById(@PathVariable String id) {
-		return authRepo.findOne(id);
+		return service.getAuthorById(id);
 	}
 	
 	@RequestMapping(path="/posts")
 	public List<Post> getAllPosts(@RequestParam(value="author_id",required = false) String authId) {
 		if(authId == null) 
-			return postRepo.findAll();
+			return service.getAllPosts();
 		else 
-			return postRepo.findByAuthorId(authId);
+			return service.getAllPostByAuthorId(authId);
 	}
 		
 
 	@RequestMapping(path="/comments")
 	public List<Comment> getAllComments(@RequestParam(value="post_id",required = false) String postId) {
 		if(postId == null)
-			return commentRepo.findAll();
+			return service.getAllComments();
 		else
-			return commentRepo.findByPostId(postId);
+			return service.getAllCommentsForPost(postId);
 	}
 	
 }
