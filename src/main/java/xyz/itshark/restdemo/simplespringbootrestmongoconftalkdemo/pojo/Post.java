@@ -13,9 +13,7 @@ public class Post {
 
 	@Id
 	private final String id;
-	
-	//private final String authourId;
-	
+		
 	@NotNull
 	private String authorId;
 	
